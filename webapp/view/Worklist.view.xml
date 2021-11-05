@@ -1,0 +1,53 @@
+<mvc:View controllerName="com.wb.adobe.adobeform01.controller.Worklist" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic">
+	<semantic:SemanticPage id="page" headerPinnable="false" toggleHeaderOnTitleClick="false">
+		<semantic:titleHeading>
+			<Title text="{i18n>worklistTitle}" level="H2"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<Table id="table" width="auto"
+				items="{ path: '/Orders', sorter: { path: 'OrderID', descending: false }, parameters: { expand: 'Customer' } }"
+				noDataText="{worklistView>/tableNoDataText}" busyIndicatorDelay="{worklistView>/tableBusyDelay}" growing="true" growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title id="tableHeader" text="Orders" level="H3"/>
+						<ToolbarSpacer/>
+						<SearchField id="searchField" tooltip="{i18n>worklistSearchTooltip}" search=".onSearch">
+							<layoutData>
+								<OverflowToolbarLayoutData maxWidth="200px" priority="NeverOverflow"/>
+							</layoutData>
+						</SearchField>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column id="nameColumn">
+						<Text text="Order"/>
+					</Column>
+					<Column>
+						<Text text="Order Date"/>
+					</Column>
+					<Column>
+						<Text text="Shipped Date"/>
+					</Column>
+					<Column>
+						<Text text="Customer"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press=".onPress">
+						<cells>
+							<ObjectIdentifier title="{OrderID}" text="Customer: {Customer/CompanyName}"/>
+							<Text text="{ path: 'OrderDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>
+							<Text text="{ path: 'ShippedDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>
+							<Text text="{Customer/ContactName}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onShareEmailPress"/>
+		</semantic:sendEmailAction>
+	</semantic:SemanticPage>
+</mvc:View>
